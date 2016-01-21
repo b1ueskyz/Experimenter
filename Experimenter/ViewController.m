@@ -7,26 +7,23 @@
 //
 
 #import "ViewController.h"
-#import <CoreGraphics/CoreGraphics.h>
-
 #import "HangarViewController.h"
 
 @interface ViewController ()
 
-@property (nonatomic, strong) IBOutlet UIView* testView;
-@property (nonatomic, strong) IBOutlet UIView* contentView;
+@property (nonatomic, weak) IBOutlet UIView*   testView;
 @property (nonatomic, weak) IBOutlet UIButton* testButton1;
 @property (nonatomic, weak) IBOutlet UIButton* testButton2;
 @property (nonatomic, weak) IBOutlet UIButton* testButton3;
 @property (nonatomic, weak) IBOutlet UIButton* testButton4;
 @property (nonatomic, weak) IBOutlet UIButton* testButton5;
 
-@property (nonatomic, strong) HangarViewController* ha;
-@property (nonatomic, assign) BOOL testViewIsOpen;
+@property (nonatomic, assign) BOOL  testViewIsOpen;
 @property (nonatomic, assign) float screenWidth;
 @property (nonatomic, assign) float screenHeight;
-@property (nonatomic, strong) NSArray* buttons;
-@property (nonatomic, strong) UIView* currentContent;
+
+@property (nonatomic, strong) NSArray* tabs;
+@property (nonatomic, strong) UIView * currentContent;
 
 @end
 
@@ -39,10 +36,10 @@
    [self addNewTabs];
    self.testViewIsOpen = NO;
    
-   _screenWidth = UIScreen.mainScreen.bounds.size.width;
+   _screenWidth  = UIScreen.mainScreen.bounds.size.width;
    _screenHeight = UIScreen.mainScreen.bounds.size.height;
    
-   self.buttons = @[_testButton1, _testButton2, _testButton3, _testButton4, _testButton5];
+   self.tabs = @[_testButton1, _testButton2, _testButton3, _testButton4, _testButton5];
 }
 
 #define TAB_HEIGHT 35
@@ -53,7 +50,6 @@
 
    if (_testViewIsOpen) {
       [self closeView:selectedTab];
-      [self.currentContent removeFromSuperview];
    }
    else {
       [self exposeView:selectedTab];
@@ -67,45 +63,45 @@
    CGRect showButtonFrame   = selectedTab.frame;
    showButtonFrame.origin.x = _screenWidth;
 
-   CGRect newViewFrame     = _testView.frame;
-   newViewFrame.size.width = _screenWidth - (TAB_HEIGHT - 1);// off by 1 px because my drawing is off
+   CGRect newViewFrame      = _testView.frame;
+   newViewFrame.size.width  = _screenWidth - (TAB_HEIGHT - 1);// off by 1 px because my drawing is off
    newViewFrame.size.height = _screenHeight;
    
-   [self configureViewColor:selectedTab];
+   [self configureViewForTab:selectedTab];
 
    [UIView animateWithDuration:0.4
                          delay:0.0
                        options:UIViewAnimationOptionCurveEaseInOut
                     animations:^(void) {
-                       selectedTab.frame = showButtonFrame;
-                       self.testView.frame   = newViewFrame;
+                       selectedTab.frame   = showButtonFrame;
+                       self.testView.frame = newViewFrame;
                        
-                       for (UIButton* b in _buttons) {
+                       for (UIButton* b in _tabs) {
                           if (b != selectedTab) {
                              CGRect hideButtonFrame;
-                             hideButtonFrame = b.frame;
+                             hideButtonFrame          = b.frame;
                              hideButtonFrame.origin.x = -TAB_HEIGHT;
                              
                              b.enabled = NO;
-                             b.frame = hideButtonFrame;
+                             b.frame   = hideButtonFrame;
                           }
                        }
+                       self.currentContent.alpha = 1.0;
                     }
                     completion:^(BOOL finished){
-                       [self configureViewForTab:selectedTab];
                     }];
 }
 
 - (void)closeView:(UIButton*)selectedTab
 {
-   CGRect newViewFrame     = _testView.frame;
-   newViewFrame.size.width = 0.0;
-   
+   CGRect newViewFrame      = _testView.frame;
+   newViewFrame.size.width  = 0.0;
+
    CGRect showButtonFrame   = selectedTab.frame;
    showButtonFrame.origin.x = TAB_HEIGHT;
    
-   for (UIButton* b in _buttons) {
-      CGRect newButtonFrame = b.frame;
+   for (UIButton* b in _tabs) {
+      CGRect newButtonFrame   = b.frame;
       newButtonFrame.origin.x = TAB_HEIGHT;
       
       b.enabled = YES;
@@ -114,16 +110,17 @@
                             delay:0.0
                           options:UIViewAnimationOptionCurveEaseInOut
                        animations:^(void) {
-                          _testView.frame   = newViewFrame;
+                          _testView.frame       = newViewFrame;
                           _currentContent.frame = newViewFrame;
-                          selectedTab.frame = showButtonFrame;
+                          selectedTab.frame     = showButtonFrame;
 
                           if (b != selectedTab) {
                              b.frame = newButtonFrame;
                           }
+                          self.currentContent.alpha = 0.0;
                        }
                        completion:^(BOOL finished){
-
+                          [self.currentContent removeFromSuperview];
                        }];
    }
 }
@@ -165,11 +162,14 @@
 
 - (void)configureViewForTab:(UIButton*)selectedTab
 {
-   
+   [self configureViewColor:selectedTab];
+
    HangarViewController* ha = [[HangarViewController alloc] initWithNibName:@"HangarViewController"
                                                                      bundle:nil];
-   self.currentContent = ha.view;
-   [self.testView addSubview:ha.view];
+   self.currentContent       = ha.view;
+   self.currentContent.alpha = 0.0;
+
+   [self.testView addSubview:self.currentContent];
 }
 
 - (void)configureViewColor:(UIButton*)selectedTab
