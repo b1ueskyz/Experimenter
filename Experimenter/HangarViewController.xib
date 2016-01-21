@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.iPad.XIB" version="3.0" toolsVersion="9531" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
@@ -15,27 +15,40 @@
             <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES"/>
             <subviews>
-                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="h15-UJ-B87">
+                <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="h15-UJ-B87">
                     <rect key="frame" x="20" y="20" width="200" height="728"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="200" id="agm-pk-XYL"/>
+                    </constraints>
                 </tableView>
-                <view contentMode="scaleToFill" id="WXc-e0-SxX">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WXc-e0-SxX">
                     <rect key="frame" x="240" y="20" width="730" height="728"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMinX="YES" heightSizable="YES"/>
                     <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Drawing Area" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="zV4-qe-oam">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Drawing Area" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zV4-qe-oam">
                             <rect key="frame" x="284" y="353" width="163" height="21"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="728" id="GSb-Wt-lqb"/>
+                        <constraint firstAttribute="width" constant="730" id="xab-ik-ZOQ"/>
+                    </constraints>
                 </view>
             </subviews>
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="h15-UJ-B87" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="8WE-1T-0Fz"/>
+                <constraint firstAttribute="bottom" secondItem="WXc-e0-SxX" secondAttribute="bottom" constant="20" id="LKU-hp-mMy"/>
+                <constraint firstItem="WXc-e0-SxX" firstAttribute="leading" secondItem="h15-UJ-B87" secondAttribute="trailing" constant="20" id="UrU-lC-IP9"/>
+                <constraint firstAttribute="trailing" secondItem="WXc-e0-SxX" secondAttribute="trailing" constant="54" id="XoA-ie-12X"/>
+                <constraint firstItem="h15-UJ-B87" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="20" id="pyQ-YR-7Kx"/>
+                <constraint firstItem="WXc-e0-SxX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="20" id="tgl-yX-F0k"/>
+                <constraint firstAttribute="bottom" secondItem="h15-UJ-B87" secondAttribute="bottom" constant="20" id="yq0-O3-GXe"/>
+            </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="519" y="400"/>
         </view>

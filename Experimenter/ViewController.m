@@ -18,6 +18,13 @@
 @property (nonatomic, weak) IBOutlet UIButton* testButton4;
 @property (nonatomic, weak) IBOutlet UIButton* testButton5;
 
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* testViewLeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* tab1LeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* tab2LeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* tab3LeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* tab4LeadingConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint* tab5LeadingConstraint;
+
 @property (nonatomic, assign) BOOL  testViewIsOpen;
 @property (nonatomic, assign) float screenWidth;
 @property (nonatomic, assign) float screenHeight;
@@ -60,6 +67,39 @@
 
 - (void)exposeView:(UIButton*)selectedTab
 {
+   [self.view layoutIfNeeded];
+   
+   [self configureViewForTab:selectedTab];
+
+   [UIView animateWithDuration:10.4
+                         delay:0.0
+                       options:UIViewAnimationOptionCurveEaseInOut
+                    animations:^(void) {
+                       self.testViewLeadingConstraint.constant = -TAB_HEIGHT;
+                       
+                       if (selectedTab != _testButton1) {
+                          _tab1LeadingConstraint.constant = -1064.0;
+                       }
+                       if (selectedTab != _testButton2) {
+                          _tab2LeadingConstraint.constant = -1064.0;
+                       }
+                       if (selectedTab != _testButton3) {
+                          _tab3LeadingConstraint.constant = -1064.0;
+                       }
+                       if (selectedTab != _testButton4) {
+                          _tab4LeadingConstraint.constant = -1064.0;
+                       }
+                       if (selectedTab != _testButton5) {
+                          _tab5LeadingConstraint.constant = -1064.0;
+                       }
+                    }
+                    completion:^(BOOL finished) {
+                       [self.view layoutIfNeeded];
+                    }];
+}
+
+- (void)exposeView_old:(UIButton*)selectedTab
+{
    CGRect showButtonFrame   = selectedTab.frame;
    showButtonFrame.origin.x = _screenWidth;
 
@@ -93,6 +133,38 @@
 }
 
 - (void)closeView:(UIButton*)selectedTab
+{
+   [self.view layoutIfNeeded];
+   
+   [UIView animateWithDuration:5.4
+                         delay:0.0
+                       options:UIViewAnimationOptionCurveEaseInOut
+                    animations:^(void) {
+                       self.testViewLeadingConstraint.constant = -1024;
+                       
+                       if (selectedTab != _testButton1) {
+                          _tab1LeadingConstraint.constant = -TAB_HEIGHT;
+                       }
+                       if (selectedTab != _testButton2) {
+                          _tab2LeadingConstraint.constant = -TAB_HEIGHT;
+                       }
+                       if (selectedTab != _testButton3) {
+                          _tab3LeadingConstraint.constant = -TAB_HEIGHT;
+                       }
+                       if (selectedTab != _testButton4) {
+                          _tab4LeadingConstraint.constant = -TAB_HEIGHT;
+                       }
+                       if (selectedTab != _testButton5) {
+                          _tab5LeadingConstraint.constant = -TAB_HEIGHT;
+                       }
+                    }
+                    completion:^(BOOL finished) {
+                       [self.currentContent removeFromSuperview];
+                       [self.view layoutIfNeeded];
+                    }];
+}
+
+- (void)closeView_old:(UIButton*)selectedTab
 {
    CGRect newViewFrame      = _testView.frame;
    newViewFrame.size.width  = 0.0;
@@ -167,7 +239,7 @@
    HangarViewController* ha = [[HangarViewController alloc] initWithNibName:@"HangarViewController"
                                                                      bundle:nil];
    self.currentContent       = ha.view;
-   self.currentContent.alpha = 0.0;
+//   self.currentContent.alpha = 0.0;
 
    [self.testView addSubview:self.currentContent];
 }
