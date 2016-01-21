@@ -70,130 +70,76 @@
    [self.view layoutIfNeeded];
    
    [self configureViewForTab:selectedTab];
-
-   [UIView animateWithDuration:10.4
-                         delay:0.0
-                       options:UIViewAnimationOptionCurveEaseInOut
-                    animations:^(void) {
-                       self.testViewLeadingConstraint.constant = -TAB_HEIGHT;
-                       
-                       if (selectedTab != _testButton1) {
-                          _tab1LeadingConstraint.constant = -1064.0;
-                       }
-                       if (selectedTab != _testButton2) {
-                          _tab2LeadingConstraint.constant = -1064.0;
-                       }
-                       if (selectedTab != _testButton3) {
-                          _tab3LeadingConstraint.constant = -1064.0;
-                       }
-                       if (selectedTab != _testButton4) {
-                          _tab4LeadingConstraint.constant = -1064.0;
-                       }
-                       if (selectedTab != _testButton5) {
-                          _tab5LeadingConstraint.constant = -1064.0;
-                       }
-                    }
-                    completion:^(BOOL finished) {
-                       [self.view layoutIfNeeded];
-                    }];
-}
-
-- (void)exposeView_old:(UIButton*)selectedTab
-{
-   CGRect showButtonFrame   = selectedTab.frame;
-   showButtonFrame.origin.x = _screenWidth;
-
-   CGRect newViewFrame      = _testView.frame;
-   newViewFrame.size.width  = _screenWidth - (TAB_HEIGHT - 1);// off by 1 px because my drawing is off
-   newViewFrame.size.height = _screenHeight;
+   [self setupOpeningAnimationsForSelectedTab:selectedTab];
    
-   [self configureViewForTab:selectedTab];
-
    [UIView animateWithDuration:0.4
                          delay:0.0
                        options:UIViewAnimationOptionCurveEaseInOut
                     animations:^(void) {
-                       selectedTab.frame   = showButtonFrame;
-                       self.testView.frame = newViewFrame;
-                       
-                       for (UIButton* b in _tabs) {
-                          if (b != selectedTab) {
-                             CGRect hideButtonFrame;
-                             hideButtonFrame          = b.frame;
-                             hideButtonFrame.origin.x = -TAB_HEIGHT;
-                             
-                             b.enabled = NO;
-                             b.frame   = hideButtonFrame;
-                          }
-                       }
                        self.currentContent.alpha = 1.0;
+                       [self.view layoutIfNeeded];
                     }
-                    completion:^(BOOL finished){
+                    completion:^(BOOL finished) {
+
                     }];
 }
 
 - (void)closeView:(UIButton*)selectedTab
 {
    [self.view layoutIfNeeded];
+   [self setupClosingingAnimationsForSelectedTab:selectedTab];
    
-   [UIView animateWithDuration:5.4
+   [UIView animateWithDuration:0.4
                          delay:0.0
                        options:UIViewAnimationOptionCurveEaseInOut
                     animations:^(void) {
-                       self.testViewLeadingConstraint.constant = -1024;
-                       
-                       if (selectedTab != _testButton1) {
-                          _tab1LeadingConstraint.constant = -TAB_HEIGHT;
-                       }
-                       if (selectedTab != _testButton2) {
-                          _tab2LeadingConstraint.constant = -TAB_HEIGHT;
-                       }
-                       if (selectedTab != _testButton3) {
-                          _tab3LeadingConstraint.constant = -TAB_HEIGHT;
-                       }
-                       if (selectedTab != _testButton4) {
-                          _tab4LeadingConstraint.constant = -TAB_HEIGHT;
-                       }
-                       if (selectedTab != _testButton5) {
-                          _tab5LeadingConstraint.constant = -TAB_HEIGHT;
-                       }
+                       self.currentContent.alpha = 0.0;
+                       [self.view layoutIfNeeded];
                     }
                     completion:^(BOOL finished) {
                        [self.currentContent removeFromSuperview];
-                       [self.view layoutIfNeeded];
                     }];
 }
 
-- (void)closeView_old:(UIButton*)selectedTab
+- (void)setupOpeningAnimationsForSelectedTab:(UIButton*)selectedTab
 {
-   CGRect newViewFrame      = _testView.frame;
-   newViewFrame.size.width  = 0.0;
-
-   CGRect showButtonFrame   = selectedTab.frame;
-   showButtonFrame.origin.x = TAB_HEIGHT;
+   self.testViewLeadingConstraint.constant = -TAB_HEIGHT;
    
-   for (UIButton* b in _tabs) {
-      CGRect newButtonFrame   = b.frame;
-      newButtonFrame.origin.x = TAB_HEIGHT;
-      
-      b.enabled = YES;
-      
-      [UIView animateWithDuration:0.4
-                            delay:0.0
-                          options:UIViewAnimationOptionCurveEaseInOut
-                       animations:^(void) {
-                          _testView.frame       = newViewFrame;
-                          _currentContent.frame = newViewFrame;
-                          selectedTab.frame     = showButtonFrame;
+   if (selectedTab != _testButton1) {
+      _tab1LeadingConstraint.constant = -(_screenWidth + TAB_HEIGHT); // -(1024 + 35)
+   }
+   if (selectedTab != _testButton2) {
+      _tab2LeadingConstraint.constant = -(_screenWidth + TAB_HEIGHT);
+   }
+   if (selectedTab != _testButton3) {
+      _tab3LeadingConstraint.constant = -(_screenWidth + TAB_HEIGHT);
+   }
+   if (selectedTab != _testButton4) {
+      _tab4LeadingConstraint.constant = -(_screenWidth + TAB_HEIGHT);
+   }
+   if (selectedTab != _testButton5) {
+      _tab5LeadingConstraint.constant = -(_screenWidth + TAB_HEIGHT);
+   }
+}
 
-                          if (b != selectedTab) {
-                             b.frame = newButtonFrame;
-                          }
-                          self.currentContent.alpha = 0.0;
-                       }
-                       completion:^(BOOL finished){
-                          [self.currentContent removeFromSuperview];
-                       }];
+- (void)setupClosingingAnimationsForSelectedTab:(UIButton*)selectedTab
+{
+   self.testViewLeadingConstraint.constant = -_screenWidth;
+   
+   if (selectedTab != _testButton1) {
+      _tab1LeadingConstraint.constant = -TAB_HEIGHT;
+   }
+   if (selectedTab != _testButton2) {
+      _tab2LeadingConstraint.constant = -TAB_HEIGHT;
+   }
+   if (selectedTab != _testButton3) {
+      _tab3LeadingConstraint.constant = -TAB_HEIGHT;
+   }
+   if (selectedTab != _testButton4) {
+      _tab4LeadingConstraint.constant = -TAB_HEIGHT;
+   }
+   if (selectedTab != _testButton5) {
+      _tab5LeadingConstraint.constant = -TAB_HEIGHT;
    }
 }
 
@@ -239,7 +185,7 @@
    HangarViewController* ha = [[HangarViewController alloc] initWithNibName:@"HangarViewController"
                                                                      bundle:nil];
    self.currentContent       = ha.view;
-//   self.currentContent.alpha = 0.0;
+   self.currentContent.alpha = 0.0;
 
    [self.testView addSubview:self.currentContent];
 }
